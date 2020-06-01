@@ -17,6 +17,7 @@
 
 <body>
     <div class='container'>
+        <h3 id='timer'></h3>
         <div id='alertCorrect' class="alert alert-success" style='display:none;'>
             Good stuff, that was correct!
           </div>
@@ -55,6 +56,17 @@
         let questionNum;
         let statsCorrectAnswers = 0;
         let statsWrongAnswers = 0;
+        let timerInterval;
+
+        function checkTime(){
+            timer = timer - 1;
+            document.querySelector('#timer').innerHTML = `${timer} seconds remaining...`;
+
+            if( timer<1 ){
+                // time is up! end the game
+                showFinished();
+            }
+        }
 
         function showQuestion(){
             const currentQuestion = questions[questionNum];
@@ -100,11 +112,14 @@
             document.querySelector('#alertCorrect').style.display = 'block';
             document.querySelector('#alertCorrect').innerHTML =  
                 `Done, your right answers: ${statsCorrectAnswers}, and wrong: ${statsWrongAnswers}`;
+            clearInterval( timerInterval );
         }
 
         function startGame(){
             // reset the timer to 200s
             timer = 200;
+            timerInterval = setInterval( checkTime, 1000 );
+
             // show first question
             questionNum = 0;
             showQuestion();
