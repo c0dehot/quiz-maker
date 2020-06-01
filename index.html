@@ -84,8 +84,10 @@
             event.preventDefault();
 
             console.log( `[checkAnswer] checking question, answer given: ${userAnswer}` );
+            
             // check if user got hte question right, 
             const currentQuestion = questions[questionNum];
+            // display a message            
             if( currentQuestion.correctAnswer === userAnswer ){
                 document.querySelector('#alertCorrect').style.display = 'block';
                 document.querySelector('#alertWrong').style.display = 'none';
@@ -95,28 +97,30 @@
                 document.querySelector('#alertWrong').style.display = 'block';
                 statsWrongAnswers++;
             }
-            // display a message
-            // move on to next question
-            
+
+            // move on to next question (if any more exist)
             questionNum = questionNum+1;
             if( questionNum >= questions.length ){
                 // we are done! no more questions!
                 showFinished();
-            } else {
-                // show next question
-                showQuestion();
-            }
+                return;
+            };
+
+            // show next question
+            showQuestion();
         }
 
         function showFinished(){
+            // show whatever code for the finished display here
             document.querySelector('#alertCorrect').style.display = 'block';
             document.querySelector('#alertCorrect').innerHTML =  
                 `Done, your right answers: ${statsCorrectAnswers}, and wrong: ${statsWrongAnswers}`;
+            // stop the timer
             clearInterval( timerInterval );
         }
 
         function startGame(){
-            // reset the timer to 200s
+            // reset the timer to 200s, and start count-down
             timer = 200;
             timerInterval = setInterval( checkTime, 1000 );
 
